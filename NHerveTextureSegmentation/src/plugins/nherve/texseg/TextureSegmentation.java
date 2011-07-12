@@ -5,6 +5,7 @@ import icy.gui.frame.IcyFrame;
 import icy.gui.util.GuiUtil;
 import icy.gui.util.WindowPositionSaver;
 import icy.image.IcyBufferedImage;
+import icy.preferences.XMLPreferences;
 import icy.system.thread.ThreadUtil;
 import icy.type.TypeUtil;
 
@@ -18,7 +19,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.prefs.Preferences;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
@@ -357,8 +357,7 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 	private final static String PLUGIN_NAME = "TextureSegmentation";
 	private final static String PLUGIN_VERSION = "1.0.0";
 	private final static String FULL_PLUGIN_NAME = PLUGIN_NAME + " V" + PLUGIN_VERSION;
-	private final static String PREFERENCES_NODE = "icy/plugins/nherve/texseg/TextureSegmentation";
-
+	
 	private final static String POSITIVE_MASK = "Positive";
 	private final static String NEGATIVE_MASK = "Negative";
 	private final static String PREDICTION_MASK = "Prediction";
@@ -540,7 +539,7 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 
 	@Override
 	public void startInterface() {
-		Preferences preferences = Preferences.userRoot().node(PREFERENCES_NODE);
+		XMLPreferences preferences = getPreferences();
 		int w = preferences.getInt("w", 5);
 		int p = preferences.getInt("p", 8);
 		double r = preferences.getDouble("r", 1.);
@@ -552,7 +551,7 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 		mainPanel = GuiUtil.generatePanel();
 		frame = GuiUtil.generateTitleFrame(FULL_PLUGIN_NAME, mainPanel, new Dimension(400, 100), false, true, false, true);
 
-		new WindowPositionSaver(frame, PREFERENCES_NODE, new Point(0, 0));
+		new WindowPositionSaver(frame, preferences.absolutePath(), new Point(0, 0));
 
 		// Current image
 		currentImage = new JLabel("none");
@@ -652,7 +651,7 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 
 	@Override
 	public void stopInterface() {
-		Preferences preferences = Preferences.userRoot().node(PREFERENCES_NODE);
+		XMLPreferences preferences = getPreferences();
 
 		preferences.putInt("w", Integer.parseInt(prmW.getText()));
 		preferences.putInt("p", Integer.parseInt(prmP.getText()));
