@@ -1,9 +1,7 @@
 package plugins.nherve.texseg;
 
 import icy.gui.component.ComponentUtil;
-import icy.gui.frame.IcyFrame;
 import icy.gui.util.GuiUtil;
-import icy.gui.util.WindowPositionSaver;
 import icy.image.IcyBufferedImage;
 import icy.preferences.XMLPreferences;
 import icy.system.thread.ThreadUtil;
@@ -11,7 +9,6 @@ import icy.type.TypeUtil;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -354,18 +351,12 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 		}
 	}
 
-	private final static String PLUGIN_NAME = "TextureSegmentation";
-	private final static String PLUGIN_VERSION = "1.0.0";
-	private final static String FULL_PLUGIN_NAME = PLUGIN_NAME + " V" + PLUGIN_VERSION;
-	
 	private final static String POSITIVE_MASK = "Positive";
 	private final static String NEGATIVE_MASK = "Negative";
 	private final static String PREDICTION_MASK = "Prediction";
 
-	private static String HELP = "<html>" + "<p align=\"center\"><b>" + FULL_PLUGIN_NAME + "</b></p>" + "<p align=\"center\"><b>" + NherveToolbox.DEV_NAME_HTML + "</b></p>" + "<p align=\"center\"><a href=\"http://www.herve.name/pmwiki.php/Main/TextureSegmentation\">Online help is available</a></p>" + "<p align=\"center\"><b>" + NherveToolbox.COPYRIGHT_HTML + "</b></p>" + "<hr/>" + "<p>" + PLUGIN_NAME + NherveToolbox.LICENCE_HTML + "</p>" + "<p>" + NherveToolbox.LICENCE_HTMLLINK + "</p>" + "</html>";
+	private static String HELP = "<html>" + "<p align=\"center\"><b>" + HelpWindow.TAG_FULL_PLUGIN_NAME + "</b></p>" + "<p align=\"center\"><b>" + NherveToolbox.DEV_NAME_HTML + "</b></p>" + "<p align=\"center\"><a href=\"http://www.herve.name/pmwiki.php/Main/TextureSegmentation\">Online help is available</a></p>" + "<p align=\"center\"><b>" + NherveToolbox.COPYRIGHT_HTML + "</b></p>" + "<hr/>" + "<p>" + HelpWindow.TAG_PLUGIN_NAME + NherveToolbox.LICENCE_HTML + "</p>" + "<p>" + NherveToolbox.LICENCE_HTMLLINK + "</p>" + "</html>";
 
-	private IcyFrame frame;
-	private JPanel mainPanel;
 	private JLabel currentImage;
 	private JProgressBar pbTexture;
 	private JProgressBar pbSVM;
@@ -438,7 +429,7 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 			}
 
 			if (b == btHelp) {
-				new HelpWindow(PLUGIN_NAME, HELP, 400, 300, frame);
+				openHelpWindow(HELP, 400, 300);
 				return;
 			}
 
@@ -538,7 +529,7 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 	}
 
 	@Override
-	public void startInterface() {
+	public void fillInterface(JPanel mainPanel) {
 		XMLPreferences preferences = getPreferences();
 		int w = preferences.getInt("w", 5);
 		int p = preferences.getInt("p", 8);
@@ -548,10 +539,6 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 		double g = preferences.getDouble("g", 1.);
 		// int v = preferences.getInt("v", 1);
 
-		mainPanel = GuiUtil.generatePanel();
-		frame = GuiUtil.generateTitleFrame(FULL_PLUGIN_NAME, mainPanel, new Dimension(400, 100), false, true, false, true);
-
-		new WindowPositionSaver(frame, preferences.absolutePath(), new Point(0, 0));
 
 		// Current image
 		currentImage = new JLabel("none");
@@ -640,13 +627,6 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 		btHelp.addActionListener(this);
 		JPanel p4 = GuiUtil.createLineBoxPanel(Box.createHorizontalGlue(), btHelp, Box.createHorizontalGlue(), cbLog, Box.createHorizontalGlue(), btTexture, Box.createHorizontalGlue(), btSVM, Box.createHorizontalGlue(), btStop, Box.createHorizontalGlue());
 		mainPanel.add(p4);
-
-		frame.addFrameListener(this);
-		frame.setVisible(true);
-		frame.pack();
-		addIcyFrame(frame);
-
-		frame.requestFocus();
 	}
 
 	@Override
@@ -660,5 +640,10 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 		preferences.putDouble("c", Double.parseDouble(prmC.getText()));
 		preferences.putDouble("g", Double.parseDouble(prmG.getText()));
 		// preferences.putInt("v", Integer.parseInt(prmV.getText()));
+	}
+
+	@Override
+	public Dimension getDefaultFrameDimension() {
+		return null;
 	}
 }
