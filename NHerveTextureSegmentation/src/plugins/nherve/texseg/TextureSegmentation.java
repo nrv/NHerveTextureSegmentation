@@ -440,6 +440,7 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 					btTexture.setEnabled(false);
 					context = new ImageAnalysisContext();
 					context.setWorkingImage(getCurrentSequence().getFirstImage());
+					context.setWorkingName(getCurrentSequence().getName());
 
 					MaskEditor me = MaskEditor.getRunningInstance(true);
 					MaskStack stack = me.getBackupObject();
