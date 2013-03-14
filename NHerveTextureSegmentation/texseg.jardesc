@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
-    <jar path="/Users/nherve/Travail/Export ICY plug/texseg.jar"/>
+    <jar path="/home/nherve/Travail/Workspaces/export/upload_icy/texseg.jar"/>
     <options buildIfNeeded="true" compress="false" descriptionLocation="/NHerveTextureSegmentation/texseg.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
