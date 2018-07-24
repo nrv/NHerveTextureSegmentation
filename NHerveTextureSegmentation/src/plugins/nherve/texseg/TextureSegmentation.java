@@ -36,6 +36,7 @@ import plugins.nherve.toolbox.concurrent.TaskManager;
 import plugins.nherve.toolbox.image.BinaryIcyBufferedImage;
 import plugins.nherve.toolbox.image.feature.descriptor.MultiThreadedSignatureExtractor;
 import plugins.nherve.toolbox.image.feature.learning.SVMClassifier;
+import plugins.nherve.toolbox.image.feature.signature.DefaultVectorSignature;
 import plugins.nherve.toolbox.image.feature.signature.VectorSignature;
 import plugins.nherve.toolbox.image.mask.Mask;
 import plugins.nherve.toolbox.image.mask.MaskException;
@@ -118,13 +119,13 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 
 			Mask pm = stack.getByLabel(POSITIVE_MASK);
 			if (pm == null) {
-				logError("Unable to find mask " + POSITIVE_MASK);
+				error("Unable to find mask " + POSITIVE_MASK);
 				return;
 			}
 
 			Mask nm = stack.getByLabel(NEGATIVE_MASK);
 			if (nm == null) {
-				logError("Unable to find mask " + NEGATIVE_MASK);
+				error("Unable to find mask " + NEGATIVE_MASK);
 				return;
 			}
 
@@ -140,14 +141,14 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 			@SuppressWarnings("unchecked")
 			final List<PixelSignatureData> myData = (List<PixelSignatureData>) context.getObject(sigs);
 
-			List<VectorSignature> posData = new ArrayList<VectorSignature>();
+			List<DefaultVectorSignature> posData = new ArrayList<DefaultVectorSignature>();
 			for (PixelSignatureData aData : myData) {
 				if (pm.contains(aData.pix)) {
 					posData.add(aData.sig);
 				}
 			}
 
-			List<VectorSignature> negData = new ArrayList<VectorSignature>();
+			List<DefaultVectorSignature> negData = new ArrayList<DefaultVectorSignature>();
 			for (PixelSignatureData aData : myData) {
 				if (nm.contains(aData.pix)) {
 					negData.add(aData.sig);
@@ -242,7 +243,7 @@ public class TextureSegmentation extends SingletonPlugin implements ActionListen
 						return;
 					}
 				} else {
-					logError("You should fill positive and negative masks !");
+					error("You should fill positive and negative masks !");
 				}
 			}
 
